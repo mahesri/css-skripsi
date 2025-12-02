@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AttributeValidator;
+use App\DTOs\CriteriaDTO;
 use App\Http\Requests\AddCriteriaRequest;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,14 +17,14 @@ class CriteriaController extends Controller
         return \view('reflection.index');
     }
 
-    public function store(AddCriteriaRequest $request){
+    public function store(AddCriteriaRequest $request)
+    {
 
-        try {
-            $this->ValidateWithAttribute($request);
+            $dto = new CriteriaDTO($request->only(['name','description']));
 
-            return response()->json(["message" => "Kriteria berhasil ditambahkan!"]);
-        }catch (\Exception $e){
-            return response()->json(["error" => $e->getMessage()], 422);
-        }
+            $this->ValidateWithAttribute($dto);
+
+            dd($dto);
+
     }
 }

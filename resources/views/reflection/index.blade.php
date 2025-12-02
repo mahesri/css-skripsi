@@ -10,16 +10,20 @@
 <h1>Adding Criteria!</h1>
 <br>
 
-
-
 <form action="{{ route('/posts') }}" method="post">
     @csrf
 
     <label for="">Name :</label>
     <input type="text" name="name" id="">
+    @error('name')
+    <small style=" color: red; "> {{ $message }}</small>
+    @enderror
     <br>
     <label for="">Description : </label>
     <input type="text" name="description" id="">
+    @error('description')
+    <small style=" color: red ; "> {{$message}} </small>
+    @enderror
     <br>
     <button type="submit">Save</button>
 

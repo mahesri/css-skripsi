@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Attributes\NotBlank;
 use App\Attributes\Length;
+use App\Attributes\NotBlank;
 use Exception;
 use ReflectionClass;
 use ReflectionProperty;
@@ -13,7 +13,7 @@ trait AttributeValidator
     public function ValidateWithAttribute(Object $object): void
     {
         $class = new ReflectionClass($object);
-        $properties = $class->getProperty(ReflectionProperty::IS_PUBLIC);
+        $properties = $class->getProperties(ReflectionProperty::IS_PUBLIC);
 
         foreach ($properties as $property){
             $this->ValidateNotBlank($property, $object);
@@ -47,15 +47,17 @@ trait AttributeValidator
 
         foreach ($attributes as $attribute){
 
-        $length = $attribute->newInstance();
-        $strLength = strlen($value);
+            $length = $attribute->newInstance();
 
-        if ($length->max > $strLength)
-            throw new Exception("Property $property->name is to long!");
-        if ($length->min < $strLength)
-            throw new Exception("Property $property->name is to sort!");
+            $strLength = strlen($value);
+            $name = $property->getName();
+
+
+        if ($strLength > $length->max)
+            throw new Exception("Property {$name} is to long! ({$strLength}/{$length->max})");
+        if ($strLength < $length->min)
+            throw new Exception("Property {$name} is to Short! ({$strLength}/{$length->min})");
         }
     }
 }
-
 
