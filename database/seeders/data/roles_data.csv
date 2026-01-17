@@ -1,14 +1,15 @@
 role_name,skills,avg_salary_idr,vacancy_count,experience_required,source
-Backend Developer,"php,laravel,javascript,api,mysql",12000000,1580,1,"Jobstreet 2024 & Michael Page Salary Report 2024"
-Frontend Developer,"html,css,javascript,react,vue",10000000,1320,1,"Jobstreet 2024 & Robert Walters Tech Salary 2024"
-Data Analyst,"python,sql,excel,tableau,statistics",11000000,980,1,"LinkedIn Jobs 2024 & Michael Page Data Salary 2024"
-UI UX Designer,"figma,wireframe,prototyping,ux research",9000000,650,1,"Glints 2024 & Robert Walters Creative Salary 2024"
-Network Engineer,"networking,cisco,troubleshooting,linux",8000000,420,1,"Jobstreet 2024 & BPS Teknologi Informasi"
-IT Support,"troubleshooting,hardware,software,customer service",6000000,1100,0,"Jobstreet 2024"
-Mobile Developer,"flutter,dart,android,ios",13000000,480,1,"LinkedIn Jobs 2024"
-Full Stack Developer,"php,laravel,react,nodejs,mysql",14000000,770,2,"Jobstreet 2024"
-Digital Marketing,"seo,sem,google ads,social media",8000000,1250,0,"Glints 2024"
-Cloud Engineer,"aws,azure,devops,linux",15000000,380,2,"LinkedIn Cloud Jobs Trends 2024"
-
-
-Stroller 2 carsit || yg dateng 1 
+networking,computer hardware,windows os,printer troubleshooting,installation
+Backend Developer,"golang,php,laravel,nodejs,nestjs,java,typescript,api,microservices,sql,postgresql",13500000,370,2,"Jobstreet 2025 Michael Page Salary Report 2025"
+Frontend Developer,"react,nextjs,vuejs,css,javascript,typescript,html,api,figma,nuxtjs",8500000,599,1,"Jobstreet 2025"
+Data Analyst,"sql,python,excel,tableau,power bi,statistics,data visualization,reporting",10000000,1185,1,"Jobstreet 2025"
+UI UX Designer,"figma,wireframing,prototyping, adobe xd, ux research,adobe photoshop,illustrator,user personas,journey maps",9000000,145,1,"Jobstreet 2025"
+Network Engineer,"cisco,networking,troubleshooting,firewall,vpn,osi layers,bgp,ospf,meraki",9500000,1244,2,"Jobstreet 2025 dan BPS Teknologi Informasi"
+Mobile Developer,"flutter,dart,android,kotlin,ios,react native,api,sql,git",13000000,109,2,"Jobstreet 2025"
+Full Stack Developer,"react,nodejs,angular,vuejs,golang,java,spring boot,laravel,database,html css",11000000,278,2,"Jobstreet 2025"
+Digital Marketing,"seo,sem,google ads,social media,content creation,copywriting,analytics",10500000,6858,1,"Jobstreet 2025"
+Cloud Engineer,"aws,azure,devops,networks,security,database,systems administration,engineering software",14000000,377,2,"Jobstreet 2025"
+Accountant,"accounting,financial reporting,taxation,excel,financial analysis,auditing,communication,organization",12000000,1252,1,"Jobstreet 2025 & Michael Page Salary Guide 2025"
+Content Creator,"capcut, canva, creativity,storytelling,social media strategy,seo,content creation,editing tools,time management",5000000,1203,0,"Jobstreet 2025"
+Video Editor,",canva, capcut, video editing,premiere pro,after effects,color grading,storytelling,sound editing,time management",6000000,2574,1,"Jobstreet 2025"
+Graphic Designer,",canva, visual story, corel draw, figma, adobe photoshop,illustrator,indesign,typography,creativity,communication,branding,problem solving,time management,color theory",5210000,5358,1,"Jobstreet 2025 & PayScale Salary Report 2025"

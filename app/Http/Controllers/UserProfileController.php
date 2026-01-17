@@ -2,45 +2,73 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Services\CareerRecommendationService;
+use App\Services\AhpServices;
+use App\Services\Logging;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserProfileController extends Controller
 {
     public function create(Request $request)
     {
-        $linkedinUser = session('linkedin_user');
+        $linkedinUser = session('userName');
+        $roles = Role::all();
 
-        return view('profile.setup', compact('linkedinUser'));
+
+        if (session(['userName']) != null){
+            $userName = \session(['userName']);
+        }else {
+            $userName = null;
+        }
+
+        return view('profile.setup', compact('linkedinUser', 'roles'));
     }
 
-    public function store(Request $request, CareerRecommendationService $careerService)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'skills' => 'required|string',
             'years_experience' => 'required|integer|min:0',
-            'preference' => 'nullable|string'
+            'preferred_role' => 'nullable|string'
         ]);
 
         $userProfile = [
-            'skills' => array_map('trim', explode(',', $validated['skills'])),
+            'skills' => array_map('trim', explode(',', $validated['skills'] )),
             'years_experience' => $validated['years_experience'],
-            'preference' => $validated['preference'] ?? null,
         ];
 
-        $recommendations = $careerService->recommend($userProfile);
+        $ahpService = new AhpServices();
+        $ahpScores = $ahpService->calculate($userProfile);
 
-//        return view('profile.result', compact('userProfile', 'recommendations'));
+        $careerService = new CareerRecommendationService($ahpScores);
+        $finalResults = $careerService->calculateFinalScore(
+            $validated['preferred_role'] ?? null
+        );
 
-       return $this->result($recommendations);
+        session(['finalResults' => $finalResults]);
 
+        return redirect()->route('profile.result');
     }
 
-    public function result(array $data) {
+    public function result(Request $request)
+    {
+        $finalResults = collect(session('finalResults', []));
 
-        $data = $data;
+        $collection = collect($finalResults);
 
-        return view('profile.result', compact('data'));
-        dd($recommendationCarer);
+        $perPage = 5;
+        $page = request()->get('page', 1);
+
+        $pagedData = $collection->slice(($page - 1) * $perPage, $perPage);
+
+        $finalResultsPaginated = new LengthAwarePaginator($pagedData,
+            $collection->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url()]);
+
+        return view('profile.result', compact('finalResultsPaginated'));
     }
 }

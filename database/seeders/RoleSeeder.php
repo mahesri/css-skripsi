@@ -2,21 +2,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        $path = database_path('seeders/data/roles_data.csv');
 
-        $path = database_path("seeders/data/roles_data.csv");
-
-        if(!file_exists($path)) {
-            dd("CSV tidak ditemukan");
+        if (!file_exists($path)) {
+            dd("CSV tidak ditemukan: " . $path);
         }
 
         $file = fopen($path, 'r');
@@ -24,22 +20,24 @@ class RoleSeeder extends Seeder
 
         while (($row = fgetcsv($file)) !== false) {
 
-            if($isHeader) {
+            // skip header
+            if ($isHeader) {
                 $isHeader = false;
                 continue;
             }
 
             DB::table('roles')->insert([
-                'role_name'     => $row[0],
-                'skills'        => $row[1],
-                'avg_salary_idr'=> $row[2] ?? null,
-                'vacancy_count' =>  $row[3] ?? null,
-                'experience_required' =>  $row[4] ?? null,
-                'source'        =>  $row[5] ?? null,
-                'create_at'     => now(),
-                'updated_at'    => now(),
+                'role_name'           => $row[0],
+                'skills'              => $row[1],
+                'avg_salary_idr'      => $row[2] ?? null,
+                'vacancy_count'       => $row[3] ?? null,
+                'experience_required' => $row[4] ?? null,
+                'source'              => $row[5] ?? null,
+                'created_at'          => now(),
+                'updated_at'          => now(),
             ]);
         }
+
         fclose($file);
     }
 }
