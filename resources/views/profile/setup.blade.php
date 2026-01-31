@@ -12,7 +12,8 @@
 
               <h1 class="text-xl md:text-2xl font-bold leading-tight ">Complete Your Career Profile</h1>
 
-        <p class="mt-8">Halo, {{ $userName  ?? 'User' }}</p>
+              <p class="mt-2">Halo, {{ $userName  ?? 'User' }}</p>
+
 
         <form action="{{ route('profile.store') }}" method="post">
             @csrf
@@ -20,7 +21,7 @@
             {{-- SKILL --}}
             <div class="mb-3">
                 <label class="block mb-2 text-sm font-medium text-gray-900" for="skills">
-                    Skills You Have <small>(separate with commas)</small>
+                    Enter skills within the scope of information technology, creative industries, and accounting <small>(separate with commas)</small>
                 </label>
                 <input
                     type="text"

@@ -42,8 +42,10 @@ private array $criteriaWeights = [
 ];
 
     public function calculate(array $userProfile): array {
+
         $roles = Role::all();
         $raw = [];
+
         foreach($roles as $role) {
             $raw[$role->role_name] = [
                 'skill'         => $this->skillMatch($userProfile['skills'], $role->skills),
@@ -61,15 +63,13 @@ private array $criteriaWeights = [
         foreach($normalized as $role => $values) {
             $score = 0;
 
-            foreach($this->getCriteriaWeights() as $criteria => $weight) {
+            foreach($this->criteriaWeights as $criteria => $weight) {
 
                 $score += $values[$criteria] * $weight;
             }
             $scores[$role] = round($score, 4);
         }
-
         return $scores;
-
     }
 
     private function skillMatch(array $userSkills, string $roleSkills): float
@@ -96,7 +96,6 @@ private array $criteriaWeights = [
                 $data[$role][$k] = $max[$k] == 0 ? 0 : $v / $max[$k];
             }
         }
-
 
         return $data;
     }

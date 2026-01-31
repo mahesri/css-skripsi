@@ -25,6 +25,7 @@ class AuthController extends Controller
     public function register()
     {
         return view('auth.register');
+
     }
 
     public function login(Request $request){
@@ -37,11 +38,10 @@ class AuthController extends Controller
         if(Auth::attempt($credentials)) {
 
             $user = DB::table('users')->where('email', 'like', $credentials['email'])->get();
-
-            $request->session()->regenerate();
             $userName = $user->pluck('name')->first();
 
-            session(['userName:' => $userName]);
+
+
 
             $roles = Role::all();
 
@@ -60,6 +60,7 @@ class AuthController extends Controller
     public function handleLinkedInCallback()
     {
         try {
+
             $linkedinUser = Socialite::driver('linkedin-openid')->stateless()->user();
 
             $roles = Role::all();
