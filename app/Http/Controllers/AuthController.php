@@ -18,6 +18,9 @@ class AuthController extends Controller
 
     public function showLogin()
     {
+//        if ($_SESSION['login'] == true) {
+//            return redirect()
+//        }
 
         return view('auth.showLogin');
     }
@@ -40,10 +43,9 @@ class AuthController extends Controller
             $user = DB::table('users')->where('email', 'like', $credentials['email'])->get();
             $userName = $user->pluck('name')->first();
 
-
-
-
             $roles = Role::all();
+
+            session(['userName' => $userName, 'login' => true]);
 
             return view('/profile/setup', compact('userName', 'roles'));
         }
@@ -69,14 +71,16 @@ class AuthController extends Controller
 
             $user = User::firstOrCreate(
                 ['email' => $linkedinUser->getEmail()],
+
                 [
                     'name' => $linkedinUser->getName(),
                     'password' => Hash::make(Str::random(32)),
                     'email_verified_at' => now(),
-                    ]
+                ]
             );
 
             Auth::login($user);
+
             return view('profile.setup', compact('userName', 'roles'));
 
         }catch (\Exception $e) {

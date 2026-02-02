@@ -8,9 +8,7 @@ class CareerRecommendationService
     private $userPreferenceWeight = 0.25;
     private $ahpWeightPortion = 0.75;
 
-    public function __construct(array $ahpScores)
-    {
-
+    public function __construct(array $ahpScores){
         $this->ahpWeights = $ahpScores;
     }
     /**
@@ -20,11 +18,9 @@ class CareerRecommendationService
 
     public function calculateFinalScore($preferredRole) {
         $results = [];
-
         foreach ($this->ahpWeights as $role => $ahpScore) {
-
             $userPrefScore = ($preferredRole === $role) ? 1 : 0;
-
+           
             $finalScore =
                 ($ahpScore * $this->ahpWeightPortion ) +
                 ($userPrefScore * $this->userPreferenceWeight);

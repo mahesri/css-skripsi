@@ -3,7 +3,18 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/auth');
+
+    $session = session('login');
+
+    if($session === true){
+
+        $roles = \App\Models\Role::all();
+        $userName = session('userName');
+        return view('/profile/setup', compact('userName', 'roles'));
+
+    } else {
+        return redirect('/auth');
+    }
 });
 
 // Authentication

@@ -13,17 +13,16 @@ class UserProfileController extends Controller
 {
     public function create(Request $request)
     {
-        $linkedinUser = session('userName');
+
         $roles = Role::all();
+        $session = session('login');
+        $userName = session('userName');
 
-
-        if (session(['userName']) != null){
-            $userName = \session(['userName']);
+        if ($session === true){
+            return view('profile.setup', compact('userName', 'roles'));
         }else {
-            $userName = null;
+            return redirect('/auth')->with('error','Please Login first!');
         }
-
-        return view('profile.setup', compact('linkedinUser', 'roles'));
     }
 
     public function store(Request $request)
@@ -54,6 +53,11 @@ class UserProfileController extends Controller
 
     public function result(Request $request)
     {
+
+        if (session('login') !== true){
+         return   redirect('/auth')->with('error', 'Please login first!');
+        }
+
         $finalResults = collect(session('finalResults', []));
 
         $collection = collect($finalResults);

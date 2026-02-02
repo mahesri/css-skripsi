@@ -14,7 +14,6 @@
 
               <p class="mt-2">Halo, {{ $userName  ?? 'User' }}</p>
 
-
         <form action="{{ route('profile.store') }}" method="post">
             @csrf
 
