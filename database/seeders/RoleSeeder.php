@@ -1,7 +1,5 @@
 <?php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -35,9 +33,6 @@ class RoleSeeder extends Seeder
                 'source'              => $row[5] ?? null,
                 'created_at'          => now(),
                 'updated_at'          => now(),
-            ]);
-        }
-
+            ]);}
         fclose($file);
-    }
-}
+    }}

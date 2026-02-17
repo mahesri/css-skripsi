@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Role;
@@ -13,7 +12,6 @@ class UserProfileController extends Controller
 {
     public function create(Request $request)
     {
-
         $roles = Role::all();
         $session = session('login');
         $userName = session('userName');
@@ -22,8 +20,7 @@ class UserProfileController extends Controller
             return view('profile.setup', compact('userName', 'roles'));
         }else {
             return redirect('/auth')->with('error','Please Login first!');
-        }
-    }
+        }}
 
     public function store(Request $request)
     {
@@ -59,14 +56,10 @@ class UserProfileController extends Controller
         }
 
         $finalResults = collect(session('finalResults', []));
-
         $collection = collect($finalResults);
-
         $perPage = 5;
         $page = request()->get('page', 1);
-
         $pagedData = $collection->slice(($page - 1) * $perPage, $perPage);
-
         $finalResultsPaginated = new LengthAwarePaginator($pagedData,
             $collection->count(),
             $perPage,
@@ -74,5 +67,4 @@ class UserProfileController extends Controller
             ['path' => request()->url()]);
 
         return view('profile.result', compact('finalResultsPaginated'));
-    }
-}
+    }}

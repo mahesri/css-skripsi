@@ -4,24 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use function Laravel\Prompts\password;
 
 class AuthController extends Controller
 {
 
     public function showLogin()
     {
-//        if ($_SESSION['login'] == true) {
-//            return redirect()
-//        }
-
         return view('auth.showLogin');
     }
 
@@ -40,7 +34,8 @@ class AuthController extends Controller
 
         if(Auth::attempt($credentials)) {
 
-            $user = DB::table('users')->where('email', 'like', $credentials['email'])->get();
+            $user = DB::table('users')->where('email', 'like', 
+            $credentials['email'])->get();
             $userName = $user->pluck('name')->first();
 
             $roles = Role::all();
@@ -50,7 +45,8 @@ class AuthController extends Controller
             return view('/profile/setup', compact('userName', 'roles'));
         }
 
-    return redirect()->route('auth.showLogin')->with('error', 'Your email or password is incorrect');
+    return redirect()->route('auth.showLogin')->with('error', 
+    'Your email or password is incorrect');
 
     }
 
@@ -89,29 +85,16 @@ class AuthController extends Controller
                     'file' => $e->getFile(),
                     'line' => $e->getLine(),
                     'trace' => $e->getTraceAsString()
-                ]
-            );
-        }
-    }
+                ]);}}
 
     public function store(Request $request)
     {
-
-//        $request->validate([
-//            'name' => ['required', 'string', 'max:255'],
-//            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-//            'password' => 'required|min:6|confirmed'
-//        ]);
 
        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password) // Hash the password
         ]);
-
-//        Auth::login($user);
-
-//        return redirect()->route('/')->with('success', 'Kamu sudah terdaftar!');
 
         return redirect()->route('auth.showLogin')->with('message', 'Your registration was successful!');
     }

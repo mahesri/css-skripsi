@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Services;
-
 use App\Models\Role;
 
 class AhpServices
@@ -48,17 +46,18 @@ private array $criteriaWeights = [
 
         foreach($roles as $role) {
             $raw[$role->role_name] = [
-                'skill'         => $this->skillMatch($userProfile['skills'], $role->skills),
-                'experience'    => $this->experienceScore($userProfile['years_experience'], $role->experience_required),
+                'skill'         => $this->skillMatch($userProfile['skills'],
+                    $role->skills),
+                'experience'    => $this->experienceScore($userProfile[
+                    'years_experience'
+                ],
+                    $role->experience_required),
                 'demand'        => $role->vacancy_count ?? 0,
                 'salary'        => $role->avg_salary_idr ?? 0,
             ];
         }
 
         $normalized = $this->normalize($raw);
-
-        // Hitung skor AHP
-
         $scores = [];
         foreach($normalized as $role => $values) {
             $score = 0;
@@ -72,7 +71,7 @@ private array $criteriaWeights = [
         return $scores;
     }
 
-    private function skillMatch(array $userSkills, string $roleSkills): float
+    public function skillMatch(array $userSkills, string $roleSkills): float
     {
         $user = array_map('trim', array_map('strtolower', $userSkills));
         $role = array_map('trim', explode(',', strtolower($roleSkills)));
