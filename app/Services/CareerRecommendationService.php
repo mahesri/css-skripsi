@@ -15,7 +15,11 @@ class CareerRecommendationService
     public function calculateFinalScore($preferredRole) {
         $results = [];
         foreach ($this->ahpWeights as $role => $ahpScore) {
-            $userPrefScore = ($preferredRole === $role) ? 1 : 0;
+
+            if ($userPrefScore = ($preferredRole === $role) ? 1 : 0){
+                throw new \Exception('It is True ');
+            }
+
 
             $finalScore =
                 ($ahpScore * $this->ahpWeightPortion ) +

@@ -13,6 +13,7 @@ class UserProfileController extends Controller
     public function create(Request $request)
     {
         $roles = Role::all();
+//        dd($roles);
         $session = session('login');
         $userName = session('userName');
 
@@ -30,13 +31,17 @@ class UserProfileController extends Controller
             'preferred_role' => 'nullable|string'
         ]);
 
+
         $userProfile = [
             'skills' => array_map('trim', explode(',', $validated['skills'] )),
             'years_experience' => $validated['years_experience'],
         ];
 
+//        dd($userProfile);
         $ahpService = new AhpServices();
         $ahpScores = $ahpService->calculate($userProfile);
+
+
 
         $careerService = new CareerRecommendationService($ahpScores);
         $finalResults = $careerService->calculateFinalScore(

@@ -32,12 +32,14 @@ return [    'skill' => $priority[0],
             'demand' => $priority[2],
             'salary' => $priority[3], ];}
 
-private array $criteriaWeights = [
-'skill' => 0.40,
-'experience' => 0.20,
-'demand' => 0.10,
-'salary' => 0.05,
-];
+    private array $criteriaWeights = [
+
+    'skill' => 0.40,
+    'experience' => 0.20,
+    'demand' => 0.10,
+    'salary' => 0.05,
+
+    ];
 
     public function calculate(array $userProfile): array {
 
@@ -46,12 +48,8 @@ private array $criteriaWeights = [
 
         foreach($roles as $role) {
             $raw[$role->role_name] = [
-                'skill'         => $this->skillMatch($userProfile['skills'],
-                    $role->skills),
-                'experience'    => $this->experienceScore($userProfile[
-                    'years_experience'
-                ],
-                    $role->experience_required),
+                'skill'         => $this->skillMatch($userProfile['skills'], $role->skills),
+                'experience'    => $this->experienceScore($userProfile[ 'years_experience' ], $role->experience_required),
                 'demand'        => $role->vacancy_count ?? 0,
                 'salary'        => $role->avg_salary_idr ?? 0,
             ];
@@ -59,6 +57,7 @@ private array $criteriaWeights = [
 
         $normalized = $this->normalize($raw);
         $scores = [];
+
         foreach($normalized as $role => $values) {
             $score = 0;
 
@@ -71,7 +70,7 @@ private array $criteriaWeights = [
         return $scores;
     }
 
-    public function skillMatch(array $userSkills, string $roleSkills): float
+    private function skillMatch(array $userSkills, string $roleSkills): float
     {
         $user = array_map('trim', array_map('strtolower', $userSkills));
         $role = array_map('trim', explode(',', strtolower($roleSkills)));
@@ -79,14 +78,13 @@ private array $criteriaWeights = [
         return count($role) === 0 ? 0 : $intersection / count($role);
     }
 
-    private function normalize(array $data): array
+    public function normalize(array $data): array
     {
         $max = [];
         foreach($data as $values) {
             foreach($values as $k => $v){
                 $max[$k] = max($max[$k] ?? 0, $v);
-            }
-        }
+            }}
 
         foreach ($data as $role => $values) {
 

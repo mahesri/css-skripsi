@@ -41,17 +41,23 @@ class Logging
         'salary' => 0.05,
     ];
 
-    public function calculate(array $userProfile): array {
-        $roles = Role::all();
-        $raw = [];
-        foreach($roles as $role) {
-            $raw[$role->role_name] = [
-                'skill'         => $this->skillMatch($userProfile['skills'], $role->skills),
-                \Illuminate\Log\log([ 'role' => $role->role_name, 'Score Skill match' => $this->skillMatch($userProfile['skills'], $role->skills)]),
+    public function calculate(array $userProfile, $altRoles): array {
+//      $roles = Role::all();
 
-                'experience'    => $this->experienceScore($userProfile['years_experience'], $role->experience_required),
-                'demand'        => $role->vacancy_count ?? 0,
-                'salary'        => $role->avg_salary_idr ?? 0,
+        $roles = $altRoles;
+        $raw = [];
+
+        foreach($roles as $role) {
+
+//
+
+
+            $raw[$role['role_name']] = [
+                'skill'         => $this->skillMatch($userProfile['skills'], $role['skills']),
+                //   \Illuminate\Log\log([ 'role' => $role->role_name, 'Score Skill match' => $this->skillMatch($userProfile['skills'], $role->skills)]),
+                'experience'    => $this->experienceScore($userProfile['years_experience'], $role['experience_required']),
+                'demand'        => $role['vacancy_count'] ?? 0,
+                'salary'        => $role['avg_salary_idr'] ?? 0,
             ];
         }
 
@@ -70,19 +76,20 @@ class Logging
             $scores[$role] = round($score, 4);
         }
 
-        return $scores;}
+        return $scores;
+    }
 
-    private function skillMatch(array $userSkills, string $roleSkills): float
+    public function skillMatch(array $userSkills, string $roleSkills): float
     {
         $user = array_map('trim', array_map('strtolower', $userSkills));
         $role = array_map('trim', explode(',', strtolower($roleSkills)));
 
         $intersection = count(array_intersect($user, $role));
-        \Illuminate\Log\log(['Skill exist within the role'=> $intersection, 'Skill within the role appears'=> count($role)]);
+//        \Illuminate\Log\log(['Skill exist within the role'=> $intersection, 'Skill within the role appears'=> count($role)]);
         return count($role) === 0 ? 0 : $intersection / count($role);
     }
 
-    private function normalize(array $data): array
+    public function normalize(array $data): array
     {
         $max = [];
         foreach($data as $values) {
@@ -94,28 +101,25 @@ class Logging
 
         foreach ($data as $role => $values) {
 
-            \Illuminate\Log\log(['Current Role ⛄︎ '=>$role]);
+//            \Illuminate\Log\log(['Current Role ⛄︎ '=>$role]);
 
             foreach ($values as $k => $v) {
 
-                \Illuminate\Log\log(['Current Key'=>$k, 'Current Value'=>$v]);
+//                \Illuminate\Log\log(['Current Key'=>$k, 'Current Value'=>$v]);
                 $data[$role][$k] = $max[$k] == 0 ? 0 : $v / $max[$k];
 
-                \Illuminate\Log\log(['This operation occurs in '=>$k, 'Since his value is'=>$v,
-                    'Which just got assign and divided by the max of this value:'=>$max[$k],
-                    'And the result is'=>$data[$role][$k]]);
-
-
-
+//                \Illuminate\Log\log(['This operation occurs in '=>$k, 'Since his value is'=>$v,
+//                    'Which just got assign and divided by the max of this value:'=>$max[$k],
+//                    'And the result is'=>$data[$role][$k]]);
             }
         }
         return $data;
     }
 
-    private function experienceScore(int $userExp, int $required): float
+    public function experienceScore(int $userExp, int $required): float
     {
         if ($required == 0) return 1;
-        \Illuminate\Log\log(['Experience result'=>min(1, $userExp / $required)]);
+//        \Illuminate\Log\log(['Experience result'=>min(1, $userExp / $required)]);
         return min(1, $userExp / $required);
     }
 }
